@@ -15,6 +15,11 @@
         power saving mode is <span id="power-saving-status">on </span>
         <button id="powersaving-on-off">PSM switch</button>
       </p>
+      <span id="location"> Current Temperature</span>
+      <form id="select-city">
+      <input type="text" id="city" placeholder="London" required/>
+      <input type="submit" value="Change">
+      </form>
     </section>
   </body>
 </html>
@@ -22,9 +27,16 @@
 <script src="src/thermostat.js"></script>
 <script>
   $(document).ready(function() {
-  var thermostat = new Thermostat();
-  updateTemp();
+    var thermostat = new Thermostat();
+    updateTemp();
+    displayWeather('London');
 
+    $('#select-city').submit(function(event){
+      event.preventDefault();
+      let city = $('#city').val();
+      displayWeather(city);
+
+    });
 
   $( '#temperature-up' ).click(function( event ) {
     thermostat.up();
@@ -63,6 +75,13 @@
 
           function usageColor() {
             $("#energyusage").attr("class",thermostat.energyUsage());
-          };
+          }
+            function displayWeather(city) {
+              var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city;
+              var unitsAndToken = '&units=metric&appid=93a1c7d37f2049160f6692d18c5d0735';
+              $.get(url + unitsAndToken,function( data ) {
+                $( "#location" ).text(' ' + data.main.temp + ' C');
+            })
+          }
 })
   </script>
