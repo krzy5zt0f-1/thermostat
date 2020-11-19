@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="public/css/my.css">
     <title>Thermostat</title>
   </head>
   <body>
@@ -23,6 +24,7 @@
   $(document).ready(function() {
   var thermostat = new Thermostat();
   updateTemp();
+
 
   $( '#temperature-up' ).click(function( event ) {
     thermostat.up();
@@ -48,6 +50,7 @@
           function updateTemp() {
             $('#temperature').text(thermostat.temperature);
             $('#energyusage').text(thermostat.energyUsage());
+            usageColor();
           };
 
           function psmMessage() {
@@ -56,7 +59,10 @@
             } else {
               return 'off';
             }
-          }
+          };
+
+          function usageColor() {
+            $("#energyusage").attr("class",thermostat.energyUsage());
+          };
 })
-$('#energyusage').text(thermostat.energyUsage());
   </script>

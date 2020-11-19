@@ -45,7 +45,7 @@ class Thermostat {
     } else if (this._temp <= this.HIGH_ENERGY_USAGE_LIMIT && this._temp >= this.MEDIUM_ENERGY_USAGE_LIMIT) {
       return "medium-usage";
     } else {
-      return 'high-usage';
+      return "high-usage";
     }
   }
 }
