@@ -23,7 +23,6 @@
   $(document).ready(function() {
   var thermostat = new Thermostat();
   updateTemp();
-  $('#energyusage').text(thermostat.energyUsage());
 
   $( '#temperature-up' ).click(function( event ) {
     thermostat.up();
@@ -37,7 +36,6 @@
 
       $( '#temperature-reset' ).click(function( event ) {
         thermostat.reset();
-        thermostat.switchMode();
         updateTemp();
         $('#power-saving-status').text(psmMessage());
         });
@@ -49,6 +47,7 @@
 
           function updateTemp() {
             $('#temperature').text(thermostat.temperature);
+            $('#energyusage').text(thermostat.energyUsage());
           };
 
           function psmMessage() {
