@@ -27,10 +27,9 @@
 <script src="javascript/thermostat.js"></script>
 <script>
   $(document).ready(function() {
+    displayWeather('London');
     var thermostat = new Thermostat();
     loadSinatra();
-    displayWeather('London');
-
     $('#select-city').submit(function(event){
       event.preventDefault();
       let city = $('#city').val();
@@ -63,14 +62,12 @@
             $('#temperature').text(thermostat.temperature);
             $('#energyusage').text(thermostat.energyUsage());
             $.ajax({
-             type: "POST",
-             url: "http://localhost:1111/temperature",
-             data: JSON.stringify(thermostat),
-             crossDomain: true,
-             dataType: "json",
-             success: function (data, status, jqXHR) {
-
-                 alert("success");
+               type: "POST",
+               url: "http://localhost:1111/post_temperature",
+               data: JSON.stringify(thermostat),
+               crossDomain: true,
+               dataType: "json",
+               success: function (data, status, jqXHR) {
              }
            })
             usageColor();
@@ -97,8 +94,8 @@
 
           function loadSinatra() {
       $.get('http://localhost:1111/temperature', function(data) {
-        $('#temperature').text(data.temperature);
-        $('#temperature').attr('class', thermostat.energyUsage());
+        $('#temperature').text(data.text);
+        $('#energyusage').attr('class', thermostat.energyUsage());
       });
     }
 })

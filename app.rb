@@ -1,23 +1,26 @@
 require 'sinatra/base'
-require 'json'
+require 'sinatra/json'
 require_relative './lib/thermostat'
 
 class ThermostatApp < Sinatra::Base
 
+  enable :sessions
+  set :session_secret, 'WTF'
+
   get '/' do
-    File.read('public/index.html')
+    erb :index
   end
 
-  get '/temperature' do
-    thermostat = Thermostat.instance
-    { temperature: thermostat.temperature }.to_json
-  end
+  post '/post_temperature' do
+    params = JSON.parse(request.body.read)
+    text = params["_temp"]
+    session[:text] = text
+    json text: session[:text]
+end
 
-  post "/temperature" do
-    thermostat = Thermostat.instance
-    thermostat.update(params[:temperature])
-    { status: 200 }.to_json
-  end
+get '/temperature' do
+  json text: session[:text]
+end
 
   run! if app_file == $0
 end

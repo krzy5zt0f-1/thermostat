@@ -28,6 +28,10 @@ class Thermostat {
     this._powerSavingMode = !this._powerSavingMode;
   }
 
+  setTemp(temp) {
+    this._temp = temp;
+  }
+
   up() {
     if (this._powerSavingMode && this._temp < this.MAX_LIMIT_PSM_ON) {
     this._temp += 1;} else if (this._powerSavingMode === false && this._temp < this.MAX_LIMIT_PSM_OFF) {
