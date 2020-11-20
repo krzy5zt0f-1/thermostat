@@ -24,7 +24,7 @@
   </body>
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="javascript/thermostat.js"></script>
+<script src="javascript/thermo.js"></script>
 <script>
   $(document).ready(function() {
     displayWeather('London');
@@ -63,7 +63,7 @@
             $('#energyusage').text(thermostat.energyUsage());
             $.ajax({
                type: "POST",
-               url: "http://localhost:1111/post_temperature",
+               url: "http://localhost:1111/temp",
                data: JSON.stringify(thermostat),
                crossDomain: true,
                dataType: "json",
@@ -93,9 +93,11 @@
           }
 
           function loadSinatra() {
-      $.get('http://localhost:1111/temperature', function(data) {
+      $.get('http://localhost:1111/temp', function(data) {
         $('#temperature').text(data.text);
+        thermostat.setTemp(data.text);
         $('#energyusage').attr('class', thermostat.energyUsage());
+        $('#energyusage').text(thermostat.energyUsage());
       });
     }
 })

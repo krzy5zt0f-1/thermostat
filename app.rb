@@ -11,14 +11,14 @@ class ThermostatApp < Sinatra::Base
     erb :index
   end
 
-  post '/post_temperature' do
+  post '/temp' do
     params = JSON.parse(request.body.read)
     text = params["_temp"]
     session[:text] = text
     json text: session[:text]
 end
 
-get '/temperature' do
+get '/temp' do
   json text: session[:text]
 end
 

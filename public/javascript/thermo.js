@@ -24,6 +24,10 @@ class Thermostat {
     return this._powerSavingMode;
   }
 
+  setTemp(temp) {
+    this._temp = temp;
+  }
+
   switchMode() {
     this._powerSavingMode = !this._powerSavingMode;
   }
