@@ -5,7 +5,7 @@ require_relative './lib/thermostat'
 class ThermostatApp < Sinatra::Base
 
   get '/' do
-    File.read('public/jasmine/jasmine-standalone-3.6.0/index.html')
+    File.read('public/index.html')
   end
 
   get '/temperature' do

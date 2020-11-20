@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/my.css">
+    <title>Thermostat</title>
+  </head>
+  <body>
+    <section>
+      <h1 id="temperature">current temp.</h1>
+      <h1 id="energyusage">current usage</h1>
+      <p>
+        <button id="temperature-up">+</button>
+        <button id="temperature-down">-</button>
+        <button id="temperature-reset">reset</button>
+        power saving mode is <span id="power-saving-status">on </span>
+        <button id="powersaving-on-off">PSM switch</button>
+      </p>
+      <span id="location"> Current Temperature</span>
+      <form id="select-city">
+      <input type="text" id="city" placeholder="London" required/>
+      <input type="submit" value="Change">
+      </form>
+    </section>
+  </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="javascript/thermostat.js"></script>
+<script>
+  $(document).ready(function() {
+    var thermostat = new Thermostat();
+    updateTemp();
+    displayWeather('London');
+
+    $('#select-city').submit(function(event){
+      event.preventDefault();
+      let city = $('#city').val();
+      displayWeather(city);
+
+    });
+
+  $( '#temperature-up' ).click(function( event ) {
+    thermostat.up();
+    updateTemp();
+    });
+
+    $( '#temperature-down' ).click(function( event ) {
+      thermostat.down();
+      updateTemp();
+      });
+
+      $( '#temperature-reset' ).click(function( event ) {
+        thermostat.reset();
+        updateTemp();
+        $('#power-saving-status').text(psmMessage());
+        });
+
+        $( '#powersaving-on-off' ).click(function( event ) {
+          thermostat.switchMode();
+          $('#power-saving-status').text(psmMessage());
+          });
+
+          function updateTemp() {
+            $('#temperature').text(thermostat.temperature);
+            $('#energyusage').text(thermostat.energyUsage());
+            usageColor();
+          };
+
+          function psmMessage() {
+            if(thermostat.powerSavingMode) {
+              return 'on';
+            } else {
+              return 'off';
+            }
+          };
+
+          function usageColor() {
+            $("#energyusage").attr("class",thermostat.energyUsage());
+          }
+            function displayWeather(city) {
+              var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city;
+              var unitsAndToken = '&units=metric&appid=93a1c7d37f2049160f6692d18c5d0735';
+              $.get(url + unitsAndToken,function( data ) {
+                $( "#location" ).text(' ' + data.main.temp + ' C');
+            })
+          }
+})
+  </script>
