@@ -17,8 +17,8 @@
       </p>
       <span id="location"> Current Temperature</span>
       <form id="select-city">
-      <input type="text" id="city" placeholder="London" required/>
-      <input type="submit" value="Change">
+      <input type="text" id="city" placeholder="Change Location" required/>
+      <input type="submit" value="Submit">
       </form>
     </section>
   </body>
@@ -27,13 +27,22 @@
 <script src="javascript/thermo.js"></script>
 <script>
   $(document).ready(function() {
-    displayWeather('London');
+    loadTemp();
+    loadLoc();
     var thermostat = new Thermostat();
-    loadSinatra();
     $('#select-city').submit(function(event){
       event.preventDefault();
       let city = $('#city').val();
       displayWeather(city);
+      $.ajax({
+         type: "POST",
+         url: "http://localhost:1111/location",
+         data: JSON.stringify({loc: city}),
+         crossDomain: true,
+         dataType: "json",
+         success: function (data, status, jqXHR) {
+       }
+     })
 
     });
 
@@ -88,11 +97,11 @@
               var url = 'http://api.openweathermap.org/data/2.5/weather?q=' + city;
               var unitsAndToken = '&units=metric&appid=93a1c7d37f2049160f6692d18c5d0735';
               $.get(url + unitsAndToken,function( data ) {
-                $( "#location" ).text(' ' + data.main.temp + ' C');
+                $( "#location" ).text(city + ':' + ' ' + data.main.temp + ' C');
             })
           }
 
-          function loadSinatra() {
+          function loadTemp() {
       $.get('http://localhost:1111/temp', function(data) {
         $('#temperature').text(data.text);
         thermostat.setTemp(data.text);
@@ -100,5 +109,12 @@
         $('#energyusage').text(thermostat.energyUsage());
       });
     }
+
+    function loadLoc() {
+$.get('http://localhost:1111/location', function(data) {
+  city = data.loc;
+  displayWeather(city);
+});
+}
 })
   </script>
